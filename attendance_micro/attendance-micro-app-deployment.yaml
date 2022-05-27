@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attendance-micro-app-deployment
+  labels:
+    app: attendance-micro-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: attendance-micro-app
+  template:
+    metadata:
+      labels:
+        app: attendance-micro-app 
+    spec:
+      containers:
+      - name: attendance-micro-app
+        image: asandro/attendance_micro_test_image
+        ports:
+        - containerPort: 5002
