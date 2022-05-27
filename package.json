@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "csv": "^6.0.5",
-    "fs": "^0.0.1-security"
-  }
-}
