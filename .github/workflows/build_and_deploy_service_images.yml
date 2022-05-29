@@ -65,15 +65,31 @@ jobs:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-        - name: Build and push
+        - name: Build and push Attendance Microservice
           uses: docker/build-push-action@v2
           with:
             context: ./attendance_micro
             file: ./attendance_micro/Dockerfile
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/attendance_micro_github:latest
-            
-        - name: Run the image in a container
+
+        - name: Build and push Database Microservice
+          uses: docker/build-push-action@v2
+          with:
+            context: ./db_micro
+            file: ./db_micro/Dockerfile
+            push: true
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/db_micro_github:latest
+
+        - name: Build and push Authentification Microservice
+          uses: docker/build-push-action@v2
+          with:
+            context: ./auth_micro
+            file: ./auth_micro/Dockerfile
+            push: true
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/auth_micro_github:latest
+
+        - name: Run the attendance image in a container for testing
           uses: addnab/docker-run-action@v3
           with:
             image: ${{ secrets.DOCKERHUB_USERNAME }}/attendance_micro_github:latest
@@ -81,3 +97,4 @@ jobs:
               echo "runing the docker image"
               echo "Testing the nodejs  app endpoints"
               echo ${{ steps.docker_build.outputs.digest }}
+              
