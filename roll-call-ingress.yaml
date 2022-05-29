@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: example-ingress
+  name: roll-call-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-    - host: attendance-app.info
+    - host: roll-call.info
       http:
         paths:
           - path: /attendance
@@ -16,18 +16,18 @@ spec:
                 name: attendance-micro-app
                 port:
                   number: 5002
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-micro-app
+                port:
+                  number: 5001
           - path: /db
             pathType: Prefix
             backend:
               service:
-                name: some-name
+                name: db-micro-app
                 port:
-                  number: some_port
-          - path: /v3
-            pathType: Prefix
-            backend:
-              service:
-                name: webtest
-                port:
-                  number: 8080
+                  number: 5003
 

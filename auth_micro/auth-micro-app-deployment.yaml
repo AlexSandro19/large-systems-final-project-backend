@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: attendance-micro-app-deployment
+  name: auth-micro-app-deployment
   labels:
-    app: attendance-micro-app
+    app: auth-micro-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: attendance-micro-app
+      app: auth-micro-app
   template:
     metadata:
       labels:
-        app: attendance-micro-app 
+        app: auth-micro-app 
     spec:
       containers:
-      - name: attendance-micro-app
-        image: asandro/attendance_micro_github
+      - name: auth-micro-app
+        image: asandro/auth_micro_github
         ports:
-        - containerPort: 5002
+        - containerPort: 5001
         resources:
           requests:
             memory: "100Mi"
@@ -26,6 +26,3 @@ spec:
           limits:
             memory: "200Mi"
             cpu: "500m"
-
-
-
