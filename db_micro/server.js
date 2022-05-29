@@ -28,10 +28,11 @@ async function start() {
             useUnifiedTopology: true,
         });
         console.log("Connected to Mongo");
-        app.listen(PORT, () =>
-            console.log(`Database Microservice has been started on port ${PORT}...`)
-        );
+        app.listen(PORT, () =>{
+            
+        });
     } catch (e) {
+        console.log(e);
         console.log("Server Error", e.message);
         process.exit(1);
     }
@@ -44,5 +45,5 @@ async function start() {
     // });
 
 }
-
 start();
+
