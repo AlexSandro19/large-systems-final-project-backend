@@ -64,10 +64,6 @@ jobs:
           with:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-        - uses: actions/checkout@v3
-        - name: Print ls
-          run: ls -R
 
         - name: Build and push
           uses: docker/build-push-action@v2
@@ -76,11 +72,7 @@ jobs:
             file: ./attendance_micro/Dockerfile
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/attendance_micro_github:latest
-        
-        - uses: actions/checkout@v3
-        - name: Print ls again
-          run: ls -R 
-
+            
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
