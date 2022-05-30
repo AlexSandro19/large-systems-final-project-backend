@@ -3,31 +3,32 @@ kind: Ingress
 metadata:
   name: roll-call-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  ingressClassName: nginx 
   rules:
     - host: roll-call.info
       http:
         paths:
-          - path: /attendance
+          - path: /attendance(/|$)(.*)
             pathType: Prefix
             backend:
               service:
-                name: attendance-micro-app
+                name: attendance-micro-app-service
                 port:
                   number: 5002
-          - path: /auth
+          - path: /auth(/|$)(.*)
             pathType: Prefix
             backend:
               service:
-                name: auth-micro-app
+                name: auth-micro-app-service
                 port:
                   number: 5001
-          - path: /db
+          - path: /db(/|$)(.*)
             pathType: Prefix
             backend:
               service:
-                name: db-micro-app
+                name: db-micro-app-service
                 port:
                   number: 5003
 
