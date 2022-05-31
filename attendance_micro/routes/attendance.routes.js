@@ -4,8 +4,8 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const axios = require('axios').default;
 
-const studentUrl = "http://localhost:5000/db/getStudent";
-const studentUpdateUrl = "http://localhost:5000/db/updateStudent";
+const studentUrl = "http://roll-call.info/db/getStudent";
+const studentUpdateUrl = "http://roll-call.info/db/updateStudent";
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.post("/addAttendance", async (req, res) => {
             });
 
         }
-        const { attendance,token } = req.body;
+        const { attendance, token } = req.body;
         //const token = req.headers.authorization.split(" ")[1]; // "Bearer TOKEN"
         console.log("check token: ", token);
         if (!token) {
@@ -41,7 +41,7 @@ router.post("/addAttendance", async (req, res) => {
             });
         }
 
-        
+
         const { lectureForSemesterId, courseId, courseName, startDateAndTime, endDateAndTime, presence } = attendance
         console.log("req.body: ", req.body);
         // NOTE: token should be in headers -> so you need to create a function that would extract the token from header
@@ -87,7 +87,7 @@ router.post("/getAttendance", async (req, res) => {
             });
 
         }
-        const { startDate, finalDate,token } = req.body;
+        const { startDate, finalDate, token } = req.body;
         //const token = req.headers.random.split(" ")[1]; // "Bearer TOKEN"
         console.log("check token: ", token);
         if (!token) {
@@ -118,11 +118,11 @@ router.post("/getAttendance", async (req, res) => {
         const getAttendanceBetweenDates = student.attendance.filter(lecture => {
             const lectureStartDateAndTime = new Date(lecture.startDateAndTime)
             return ((lectureStartDateAndTime.getMonth() >= receivedStartDate.getMonth() && lectureStartDateAndTime.getDate() >= receivedStartDate.getDate()) &&
-                    (lectureStartDateAndTime.getMonth() <= receivedFinalDate.getMonth() && lectureStartDateAndTime.getDate() <= receivedFinalDate.getDate()))
+                (lectureStartDateAndTime.getMonth() <= receivedFinalDate.getMonth() && lectureStartDateAndTime.getDate() <= receivedFinalDate.getDate()))
         })
         console.log("message after axios", getAttendanceBetweenDates)
 
-        return res.status(200).json({ attendanceBetweenDates: {startDate, finalDate, attendance: getAttendanceBetweenDates} });
+        return res.status(200).json({ attendanceBetweenDates: { startDate, finalDate, attendance: getAttendanceBetweenDates } });
         // const updatedOrder = await C.findByIdAndUpdate(order._id, order, { new: true });
         //console.log(updatedOrder);
 

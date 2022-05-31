@@ -5,11 +5,11 @@ const bcrypt = require("bcrypt");
 const axios = require('axios').default;
 const { check, validationResult } = require("express-validator");
 
-const studentUrl = "http://localhost:5000/db/getStudent";
-const createStudentUrl = "http://localhost:5000/db/createStudent";
-const courseUrl = "http://localhost:5000/db/getCourse";
-const universityGeolocationsUrl = "http://localhost:5000/db/getUniversityGeolocations";
-const checkStudentInUniveristyUrl = "http://localhost:5000/db/checkStudentInUniveristy";
+const studentUrl = "http://roll-call.info/db/getStudent";
+const createStudentUrl = "http://roll-call.info/db/createStudent";
+const courseUrl = "http://roll-call.info/db/getCourse";
+const universityGeolocationsUrl = "http://roll-call.info/db/getUniversityGeolocations";
+const checkStudentInUniveristyUrl = "http://roll-call.info/db/checkStudentInUniveristy";
 
 const router = Router();
 
@@ -79,9 +79,9 @@ router.get("/test", async (req, res) => {
 router.post(
     "/login",
     [
-       //check("email", "Enter valid email").normalizeEmail().isEmail(),
-       //check("password", "Enter password").exists(),
-     ],
+        //check("email", "Enter valid email").normalizeEmail().isEmail(),
+        //check("password", "Enter password").exists(),
+    ],
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -183,7 +183,7 @@ router.post(
             const token = jwt.sign({ email }, process.env.JWT_SECRET, {
                 expiresIn: 60000, // value in milliseconds
             });
-            return res.json({ token,email, exp: token.exp, todaysLectures });
+            return res.json({ token, email, exp: token.exp, todaysLectures });
 
             return res.status(200).json({ message: "all good in auth" })
         } catch (e) {
