@@ -56,24 +56,6 @@ const router = Router();
 // })
 
 
-router.get("/test", async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-                message: "Invalid data while sending",
-            });
-
-        }
-
-        return res.status(200).json("all good");
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({ error: error, message: error.message })
-
-    }
-})
 
 
 router.post(
@@ -101,6 +83,7 @@ router.post(
                 .post(studentUrl, req.body)
                 .then((response) => response.data)
                 .catch((error) => {
+                    console.log(error);
                     throw error.response;
                 });
             if (!student) {
@@ -185,9 +168,8 @@ router.post(
             });
             return res.json({ token,email, exp: token.exp, todaysLectures });
 
-            return res.status(200).json({ message: "all good in auth" })
         } catch (e) {
-            console.log("received error: ", e);
+            console.log( e.message);
             if (e.status === 400) {
                 res.status(400).json({ message: e.data.message })
             } else {
