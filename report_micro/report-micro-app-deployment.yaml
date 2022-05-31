@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-micro-app-deployment
+  labels:
+    app: report-micro-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: report-micro-app
+  template:
+    metadata:
+      labels:
+        app: report-micro-app 
+    spec:
+      containers:
+      - name: report-micro-app
+        image: asandro/report_micro_github
+        env:
+        - name: MONGO_URI
+          value: "specify MONGO_URI environemnt variable here"
+        - name: JWT_SECRET
+          value: "specify JWT_SECRET environemnt variable here"
+        ports:
+        - containerPort: 5004
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "250m"
+          limits:
+            memory: "200Mi"
+            cpu: "500m"
+
+
