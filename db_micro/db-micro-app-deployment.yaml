@@ -17,6 +17,11 @@ spec:
       containers:
       - name: db-micro-app
         image: asandro/db_micro_github
+        env:
+        - name: MONGO_URI
+          value: "specify MONGO_URI environemnt variable here"
+        - name: JWT_SECRET
+          value: "specify JWT_SECRET environemnt variable here"
         ports:
         - containerPort: 5001
         resources:
