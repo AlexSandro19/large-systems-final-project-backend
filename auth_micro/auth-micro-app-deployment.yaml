@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: auth-micro-app
-        image: asandro/auth_micro_github
+        image: asandro/auth_micro_github:latest
         env:
         - name: MONGO_URI
           value: "specify MONGO_URI environemnt variable here"

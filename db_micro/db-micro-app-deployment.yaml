@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: db-micro-app
-        image: asandro/db_micro_github
+        image: asandro/db_micro_github:latest
         env:
         - name: MONGO_URI
           value: "specify MONGO_URI environemnt variable here"

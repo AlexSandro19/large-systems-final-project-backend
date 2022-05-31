@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: report-micro-app
-        image: asandro/report_micro_github
+        image: asandro/report_micro_github:latest
         env:
         - name: MONGO_URI
           value: "specify MONGO_URI environemnt variable here"
