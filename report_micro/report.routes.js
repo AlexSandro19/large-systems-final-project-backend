@@ -8,9 +8,9 @@ const cron = require('node-cron');
 const moment = require('moment');
 const generateCSV = require("./csvGenerator")
 
-const courseUrl = "http://localhost:5000/db/getCourses";
-const studentUrl = "http://localhost:5000/db/getStudents";
-const teacherUrl = "http://localhost:5000/db/getTeachers";
+const courseUrl = "http://roll-call.info/db/getCourses";
+const studentUrl = "http://roll-call.info/db/getStudents";
+const teacherUrl = "http://roll-call.info/db/getTeachers";
 
 
 const router = Router();
@@ -160,10 +160,10 @@ router.get("/daily-report",
   })
 
 router.post("/email",
-async (req, res) => {
-  try {
-      const {teacher} = req.body;
-    console.log("teacher in email: ", teacher)
+  async (req, res) => {
+    try {
+      const { teacher } = req.body;
+      console.log("teacher in email: ", teacher)
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -182,7 +182,7 @@ async (req, res) => {
         attachments: [
           {
             filename: "attendance_report.csv",
-            path: `./${teacher.pathToFile}` 
+            path: `./${teacher.pathToFile}`
           },
         ]
       };
@@ -221,7 +221,7 @@ function formatDate(date) {
 function formatDateMoment(momentDate) {
   const date = new Date(momentDate);
 
-  return `${"*"} ${"*"} ${"*"} ${"*"} ${"*"} `;
+  return `${"0"} ${"0"} ${"*"} ${"*"} ${"*"} `; // runs every day at 00:00
   // or return moment(momentDate).format('ss mm HH DD MM dddd');
 }
 
@@ -236,19 +236,19 @@ function runReportJob(data) {
 async function doSomething() {
   // my code
   console.log(Date.now())
-  const { teachers } = await axios.get("http://localhost:5000/report/daily-report")
+  const { teachers } = await axios.get("http://roll-call.info/report/daily-report")
     .then((response) => response.data)
     .catch(function (error) {
       // handle error
       console.log(error);
     })
-    
-  const teachersWithGeneratedFile = await generateCSV(teachers);
-  setTimeout(() => {console.log("waited until files get generated")}, 10000);
-  console.log("teachersWithGeneratedFile: ",teachersWithGeneratedFile); 
-  teachersWithGeneratedFile.forEach( async teacher => {
 
-    const response = await axios.post("http://localhost:5000/report/email", {teacher})
+  const teachersWithGeneratedFile = await generateCSV(teachers);
+  setTimeout(() => { console.log("waited until files get generated") }, 10000);
+  console.log("teachersWithGeneratedFile: ", teachersWithGeneratedFile);
+  teachersWithGeneratedFile.forEach(async teacher => {
+
+    const response = await axios.post("http://roll-call.info/report/email", { teacher })
       .then((response) => response.data)
       .catch(function (error) {
         // handle error

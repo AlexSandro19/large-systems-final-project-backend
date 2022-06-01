@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: report-micro-app-service
+spec:
+  selector:
+    app: report-micro-app
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5004
+    targetPort: 5004
+    nodePort: 31140
