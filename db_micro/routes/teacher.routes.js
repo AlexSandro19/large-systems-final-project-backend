@@ -28,4 +28,26 @@ router.get("/getTeachers", async (req, res) => {
     }
 })
 
+router.post("/getTeacher", async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array(),
+                message: "Invalid data while sending",
+            });
+
+        }
+        console.log("inside teacher.routes.js > getTeacher: ", req.body)
+        const { email } = req.body
+        const teacher = await Teacher.findOne({ email });
+        console.log(`teacher: ${teacher}`);
+        return res.status(200).json(teacher);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ error: error, message: error.message })
+
+    }
+});
+
 module.exports = router;

@@ -9,7 +9,7 @@ const University = require("../model/University")
 
 const router = Router();
 
-router.get("/getCourses", async (req, res) => {
+router.get("/getAllCourses", async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -30,7 +30,7 @@ router.get("/getCourses", async (req, res) => {
     }
 })
 
-router.post("/getCourse", async (req, res) => {
+router.post("/getCourses", async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -40,13 +40,13 @@ router.post("/getCourse", async (req, res) => {
             });
 
         }
-        const { coursesForStudent } = req.body; // an array should be received 
+        const { courses } = req.body; // an array should be received 
         // (ex. {
-        //     "coursesForStudent": ["62666c8732509c342d776af0", "626c641d971a4c7fd74ce2d4"]
+        //     "courses": ["62666c8732509c342d776af0", "626c641d971a4c7fd74ce2d4"]
         // })
 
         // console.log("req.body: ", req.body);
-        const allCourses = await Promise.all(coursesForStudent.map(async (course_id) => {
+        const coursesPopulated = await Promise.all(courses.map(async (course_id) => {
             const course = await Course.findById(course_id);
             return course;
 
@@ -58,10 +58,40 @@ router.post("/getCourse", async (req, res) => {
         //     return item + 1;
         // }));
 
-        console.log("/getCourse > allCourses: ", allCourses);
+        console.log("/getCourse > getCourses: ", coursesPopulated);
         // const updatedOrder = await C.findByIdAndUpdate(order._id, order, { new: true });
         //console.log(updatedOrder);
-        return res.status(200).json(allCourses);
+        return res.status(200).json(coursesPopulated);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ error: error, message: error.message })
+
+    }
+})
+
+router.post("/getCourse", async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array(),
+                message: "Invalid data while sending",
+            });
+
+        }
+        const { course_id } = req.body; // a single course should be received
+
+        console.log("course.routes > req.body: ", req.body);
+        const coursePopulated = await Course.findById(course_id);
+        // var results: number[] = await Promise.all(arr.map(async (item): Promise<number> => {
+        //     await callAsynchronousOperation(item);
+        //     return item + 1;
+        // }));
+
+        console.log("/getCourse > allCourses: ", coursePopulated);
+        // const updatedOrder = await C.findByIdAndUpdate(order._id, order, { new: true });
+        //console.log(updatedOrder);
+        return res.status(200).json(coursePopulated);
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ error: error, message: error.message })

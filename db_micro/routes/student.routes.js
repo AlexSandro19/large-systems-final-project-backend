@@ -7,7 +7,7 @@ const Student = require("../model/Student")
 
 const router = Router();
 
-router.get("/getStudents", async (req, res) => {
+router.get("/getAllStudents", async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -18,9 +18,37 @@ router.get("/getStudents", async (req, res) => {
 
         }
         const allStudents = await Student.find({});
-        // const updatedOrder = await C.findByIdAndUpdate(order._id, order, { new: true });
-        //console.log(updatedOrder);
+
         return res.status(200).json(allStudents);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ error: error, message: error.message })
+
+    }
+})
+
+router.post("/getStudents", async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array(),
+                message: "Invalid data while sending",
+            });
+
+        }
+        const { students } = req.body
+        console.log("student.routes > /getStudents > req.body: ", req.body); 
+        const studentsPopulated = await Promise.all(students.map(async (studentEmail) => {
+            console.log("student.routes > /getStudents > studentEmail: ", studentEmail)
+            const student = await Student.findOne({ email: studentEmail });
+            console.log("student.routes > /getStudents > student: ", student)
+            return student;
+            
+            // NEED TO HANDLE ERRORS (if student is not found for example, etc.)
+        }));
+        console.log("student.routes > /getStudents > studentsPopulated: ", studentsPopulated); 
+        return res.status(200).json(studentsPopulated);
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ error: error, message: error.message })
