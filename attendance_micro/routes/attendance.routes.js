@@ -4,8 +4,11 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const axios = require('axios').default;
 
-const studentUrl = "http://roll-call.info/db/getStudent";
-const studentUpdateUrl = "http://roll-call.info/db/updateStudent";
+const studentUrl = "http://localhost:5000/db/getStudent";
+const teacherUrl = "http://localhost:5000/db/getTeacher";
+const studentUpdateUrl = "http://localhost:5000/db/updateStudent";
+const studentsUrl = "http://localhost:5000/db/getStudents";
+const courseUrl = "http://localhost:5000/db/getCourse";
 
 const router = Router();
 
@@ -150,6 +153,94 @@ router.post("/getAttendance", async (req, res) => {
 
     }
 });
+
+router.post("/getAttendanceForLecture", async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array(),
+                message: "Invalid data while sending",
+            });
+
+        }
+        const { course_id, lecture_id, token } = req.body;
+        //const token = req.headers.random.split(" ")[1]; // "Bearer TOKEN"
+        console.log("attendance.routes > /getAttendanceForLecture > req.body: ", req.body);
+        console.log("check token: ", token);
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized access" });
+        }
+
+        const { email } = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("attendance.routes > /getAttendanceForLecture > email: ", email)
+        const teacher = await axios
+            .post(teacherUrl, { email })
+            .then((response) => response.data)
+            .catch((error) => {
+                throw error.response;
+            });
+        if (!teacher) {
+            return res.status(400).json({
+                message: "Invalid authorization data",
+                errors: [{ value: email, msg: "Teacher not found", param: "email" }],
+            });
+        }
+
+        const course = await axios
+            .post(courseUrl, { course_id })
+            .then((response) => response.data)
+            .catch((error) => {
+                throw error.response;
+            });
+        console.log("attendance.routes > /getAttendanceForLecture > course: ", course)
+        const request = { students: course.studentsInCourse }
+        console.log("attendance.routes > /getAttendanceForLecture > request: ", request)
+        const studentsInCourse = await axios
+            .post(studentsUrl, request)
+            .then((response) => response.data)
+            .catch((error) => {
+                throw error.response;
+            });
+
+        console.log("attendance.routes > /getAttendanceForLecture > studentsInCourse: ", studentsInCourse)
+        const studentsPresentInLecture = []
+        const studentsNotPresentInLecture = []
+        if (studentsInCourse != undefined && studentsInCourse.length > 0) {
+            studentsInCourse.forEach(student => {
+                if (student.attendance != undefined && student.attendance.length > 0) {
+                    student.attendance.forEach(lecture => {
+                        if (lecture.lectureForSemesterId == lecture_id) {
+                            if (lecture.presence == "Present") {
+                                studentsPresentInLecture.push({ studentEmail: student.email })
+                            } else if (lecture.presence == "Not Present") {
+                                studentsNotPresentInLecture.push({ studentEmail: student.email })
+                            } else {
+                                throw Error
+                            }
+                        }
+                    })
+
+                }
+            })
+
+        } else {
+            throw Error
+        }
+        return res.status(200).json({ studentsPresentInLecture, studentsNotPresentInLecture });
+    } catch (error) {
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({
+                message: "JWT token has expired, please login to obtain a new one",
+            });
+        }
+        // res.status(401).json({ message: "Unauthorized access" });
+        console.log(error.message);
+        return res.status(500).json({ error: error, message: error.message })
+
+    }
+});
+
 
 
 module.exports = router;
