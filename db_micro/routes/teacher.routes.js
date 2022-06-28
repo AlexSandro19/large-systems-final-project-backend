@@ -7,7 +7,7 @@ const Teacher = require("../model/Teacher")
 
 const router = Router();
 
-router.get("/getTeachers", async (req, res) => {
+router.get("/getAllTeachers", async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -28,7 +28,12 @@ router.get("/getTeachers", async (req, res) => {
     }
 })
 
-router.post("/getTeacher", async (req, res) => {
+router.post("/getTeacher", 
+// [
+//     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
+//             .normalizeEmail().isEmail().withMessage("Wrong email format"),
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

@@ -6,7 +6,7 @@ const proxy = require("express-http-proxy")
 
 const app = express();
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://192.168.0.101:19000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "http://localhost:19006"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });

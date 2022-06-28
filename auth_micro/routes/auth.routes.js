@@ -16,10 +16,11 @@ const router = Router();
 
 router.post(
     "/loginStudent",
-    [
-        //check("email", "Enter valid email").normalizeEmail().isEmail(),
-        //check("password", "Enter password").exists(),
-    ],
+    // [
+    //     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
+    //         .normalizeEmail().isEmail().withMessage("Wrong email format"),
+    //     check("password").exists({ checkFalsy: true }).withMessage("Password not provided"),
+    // ],
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -137,10 +138,11 @@ router.post(
 
 router.post(
     "/loginTeacher",
-    [
-        //check("email", "Enter valid email").normalizeEmail().isEmail(),
-        //check("password", "Enter password").exists(),
-    ],
+    // [
+    //     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
+    //         .normalizeEmail().isEmail().withMessage("Wrong email format"),
+    //     check("password").exists({ checkFalsy: true }).withMessage("Password not provided"),
+    // ],
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -261,6 +263,11 @@ router.post(
 
 router.post(
     "/registerStudent",
+    // [
+    //     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
+    //         .normalizeEmail().isEmail().withMessage("Wrong email format"),
+    //     check("password").exists({ checkFalsy: true }).withMessage("Password not provided"),
+    // ],
     async (req, res) => {
         try {
             const errors = validationResult(req);

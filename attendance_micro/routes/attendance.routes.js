@@ -12,7 +12,14 @@ const courseUrl = "http://localhost:5000/db/getCourse";
 
 const router = Router();
 
-router.post("/addAttendance", async (req, res) => {
+router.post("/addAttendance", 
+// [
+//     check("token").exists({ checkFalsy: true }).withMessage("token not provided")
+//     .isJWT().withMessage("token is not JWT"),
+// check("attendance").exists({ checkFalsy: true }).withMessage("Attendance not provided")
+//     .isObject().withMessage("Attendance is of wrong value type"), 
+// ], 
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -80,7 +87,16 @@ router.post("/addAttendance", async (req, res) => {
     }
 });
 
-router.post("/getAttendance", async (req, res) => {
+router.post("/getAttendance", 
+// [
+//     check("token").exists({ checkFalsy: true }).withMessage("token not provided")
+//         .isJWT().withMessage("token is not JWT"),
+//     check("startDate").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
+//         .toDate().withMessage("Value provided is not a date"),
+//     check("finalDate").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
+//         .toDate().withMessage("Value provided is not a date"),
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -124,6 +140,13 @@ router.post("/getAttendance", async (req, res) => {
                 (lectureStartDateAndTime.getMonth() <= receivedFinalDate.getMonth() && lectureStartDateAndTime.getDate() <= receivedFinalDate.getDate()))
         })
         console.log("message after axios", getAttendanceBetweenDates)
+        
+        //  const getAttendanceBetweenDates = student.attendance.filter(lecture => {
+        //     const lectureStartDateAndTime = new Date(lecture.startDateAndTime)
+        //     return ((lectureStartDateAndTime.getMonth() >= startDate.getMonth() && lectureStartDateAndTime.getDate() >= startDate.getDate()) &&
+        //         (lectureStartDateAndTime.getMonth() <= finalDate.getMonth() && lectureStartDateAndTime.getDate() <= finalDate.getDate()))
+        // })
+        // console.log("message after axios", getAttendanceBetweenDates)
 
         return res.status(200).json({ attendanceBetweenDates: { startDate, finalDate, attendance: getAttendanceBetweenDates } });
         // const updatedOrder = await C.findByIdAndUpdate(order._id, order, { new: true });
@@ -154,7 +177,16 @@ router.post("/getAttendance", async (req, res) => {
     }
 });
 
-router.post("/getAttendanceForLecture", async (req, res) => {
+router.post("/getAttendanceForLecture",
+// [
+//     check("token").exists({ checkFalsy: true }).withMessage("token not provided")
+//         .isJWT().withMessage("token is not JWT"),
+//     check("course_id").exists({ checkFalsy: true }).withMessage("Course id not provided")
+//         .isMongoId().withMessage("Value provided is not correct type"),
+//     check("lecture_id").exists({ checkFalsy: true }).withMessage("Lecture id not provided")
+//         .isMongoId().withMessage("Value provided is not correct type"),
+// ], 
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

@@ -30,7 +30,12 @@ router.get("/getAllCourses", async (req, res) => {
     }
 })
 
-router.post("/getCourses", async (req, res) => {
+router.post("/getCourses", 
+// [
+//     check("courses").exists({ checkFalsy: true }).withMessage("Courses not provided")
+//     .isArray({min: 1}).withMessage("Courses should be sent in an array with at least a single value"), 
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -69,7 +74,13 @@ router.post("/getCourses", async (req, res) => {
     }
 })
 
-router.post("/getCourse", async (req, res) => {
+router.post("/getCourse", 
+// [
+//     check("course_id").exists({ checkFalsy: true }).withMessage("Course id not provided")
+//     .isString().withMessage("Value should be sent as string value")
+//     .isMongoId().withMessage("Value provided is not correct type"), 
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -98,117 +109,5 @@ router.post("/getCourse", async (req, res) => {
 
     }
 })
-
-// router.post("/updateOrder", async (req, res) => {
-//     try {
-//         const errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//             return res.status(400).json({
-//                 errors: errors.array(),
-//                 message: "Invalid data while sending",
-//             });
-
-//         }
-//         const { order } = req.body
-//         const updatedOrder = await Order.findByIdAndUpdate(order._id, order, { new: true });
-//         //console.log(updatedOrder);
-//         return res.status(200).json(updatedOrder);
-//     } catch (error) {
-//         console.log(error.message);
-//         return res.status(500).json({ error: error, message: error.message })
-
-//     }
-// })
-
-// router.post("/createOrder", async (req, res) => {
-
-//     try {
-
-//         const data = req.body;
-//         console.log("/createOrder req.body, ", req.body)
-//         const order = new Order({ ...data })
-//         await order.save();
-//         // const upddatedOrder = await Order.findOne({_id:order._id}).populate("items");
-//         console.log("CreatedOrder, ", order)
-//         const user = await User.findOne({ _id: order.userId });
-//         user.orders.push(order)
-//         user.cart = []
-//         await user.save()
-//         // const updatedOrders = [...user.orders, order._id];
-//         // console.log("updatedOrders ", updatedOrders)
-//         // console.log("updatedOrders ofter push ", updatedOrders)
-//         // await user.updateOne({_id: user._id}, {orders: updatedOrders})
-//         const newUser = await User.findOne({ _id: user._id });
-//         console.log("User new", newUser);
-//         return res.status(201).json(order);
-//     } catch (error) {
-
-//         console.log(error.message);
-//         return res.status(500).json({ error: error, message: error.message })
-//     }
-
-// })
-
-// router.post("/order", async (req, res) => {
-
-//     try {
-//         const errors = validationResult(req)
-//         if (!errors.isEmpty()) {
-//             return res.status(400).json({
-//                 errors: errors.array(),
-//                 message: "Invalid data while sending",
-//             });
-//         }
-
-//         const { orderId } = req.body;
-//         //console.log(orderId);
-//         const order = await Order.findOne({ _id: orderId }).populate("items");
-//         //console.log(order);
-//         if (!order) {
-//             return res.status(400).json({ message: "Order not found" })
-//         }
-//         return res.status(200).json(order);
-//     } catch (error) {
-
-//         console.log(error.message);
-//         return res.status(500).json({ error: error, message: error.message })
-//     }
-
-// })
-
-
-// router.post("/saveCart",
-//     async (req, res) => {
-//         try {
-//             console.log("api/saveCart is called");
-//             // const {user, cart} = req.body
-//             const { user, cart } = req.body;
-//             console.log("req.body in saveCart", req.body);
-//             await User.findByIdAndUpdate(user.id, { ...user, cart });
-//             const updatedUser = await User.findOne({ _id: user.id }).populate("cart");
-//             console.log("updatedUser in /saveCart ", updatedUser)
-//             return res.status(200).json(updatedUser);
-//             // if (Object.keys(savedItem).length !== 0){
-//             //   console.log("item updated successfully");
-//             //   return res.status(200).json(savedItem);
-//             // }else {
-//             //   console.log("item didnt update");
-//             // }
-//             // if (items.length === 0) {
-//             //   return res.status(404).json({ message: "No data available" });
-//             // }
-//             // console.log(items);
-//             // return res.status(200).json(items);
-
-//         } catch (error) {
-//             console.log(error.message);
-//             return res.status(404).json({ didUserUpdate: false, message: error });
-
-//         }
-
-//     }
-// );
-
-
 
 module.exports = router;

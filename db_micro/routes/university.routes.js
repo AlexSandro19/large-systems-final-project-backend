@@ -7,7 +7,7 @@ const University = require("../model/University")
 
 const router = Router();
 
-router.get("/getUniversities", async (req, res) => {
+router.get("/getAllUniversities", async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -29,7 +29,12 @@ router.get("/getUniversities", async (req, res) => {
 })
 
 
-router.post("/getUniversity", async (req, res) => {
+router.post("/getUniversity", 
+// [
+//     check("universityAttended").exists({ checkFalsy: true }).withMessage("University id not provided")
+//         .isMongoId().withMessage("Value provided is not correct type"),
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -58,7 +63,12 @@ router.post("/getUniversity", async (req, res) => {
 })
 
 
-router.post("/getUniversityGeolocations", async (req, res) => {
+router.post("/getUniversityGeolocations", 
+// [
+//     check("universityAttended").exists({ checkFalsy: true }).withMessage("University id not provided")
+//         .isMongoId().withMessage("Value provided is not correct type"),
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -87,7 +97,12 @@ router.post("/getUniversityGeolocations", async (req, res) => {
     }
 })
 
-router.post("/checkStudentInUniveristy", async (req, res) => {
+router.post("/checkStudentInUniveristy", 
+// [
+//     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
+//             .normalizeEmail().isEmail().withMessage("Wrong email format"),
+// ],
+async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

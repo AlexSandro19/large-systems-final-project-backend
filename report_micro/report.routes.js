@@ -10,7 +10,7 @@ const generateCSV = require("./csvGenerator")
 
 const courseUrl = "http://localhost:5000/db/getAllCourses";
 const allStudentsUrl = "http://localhost:5000/db/getAllStudents";
-const teacherUrl = "http://localhost:5000/db/getTeachers";
+const teacherUrl = "http://localhost:5000/db/getAllTeachers";
 
 
 const router = Router();
