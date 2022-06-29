@@ -133,11 +133,16 @@ async (req, res) => {
         const receivedFinalDate = new Date(finalDate)
 
         console.log("req.body: ", req.body);
-
+        console.log(student.attendance)
         const getAttendanceBetweenDates = student.attendance.filter(lecture => {
             const lectureStartDateAndTime = new Date(lecture.startDateAndTime)
-            return ((lectureStartDateAndTime.getMonth() >= receivedStartDate.getMonth() && lectureStartDateAndTime.getDate() >= receivedStartDate.getDate()) &&
-                (lectureStartDateAndTime.getMonth() <= receivedFinalDate.getMonth() && lectureStartDateAndTime.getDate() <= receivedFinalDate.getDate()))
+            console.log(lectureStartDateAndTime);
+            //console.log(receivedFinalDate);
+            //console.log(receivedStartDate);
+            console.log(lectureStartDateAndTime.getDate() >= receivedStartDate.getDate())
+            if (lectureStartDateAndTime.getMonth() >= receivedStartDate.getMonth() && lectureStartDateAndTime.getMonth() <= receivedFinalDate.getMonth()){
+                return true;
+            }      
         })
         console.log("message after axios", getAttendanceBetweenDates)
         
