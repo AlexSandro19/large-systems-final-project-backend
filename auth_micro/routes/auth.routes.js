@@ -15,7 +15,7 @@ const checkStudentInUniveristyUrl = "http://localhost:5000/db/checkStudentInUniv
 const router = Router();
 
 router.post(
-    "/loginStudent",
+    "/login",
     // [
     //     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
     //         .normalizeEmail().isEmail().withMessage("Wrong email format"),
