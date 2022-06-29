@@ -1,0 +1,199 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attendance-micro-app-deployment
+  labels:
+    app: attendance-micro-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: attendance-micro-app
+  template:
+    metadata:
+      labels:
+        app: attendance-micro-app 
+    spec:
+      containers:
+      - name: attendance-micro-app
+        image: asandro/attendance_micro_github:latest
+        env:
+        - name: JWT_SECRET
+          value: VALUE HERE
+        ports:
+        - containerPort: 5002
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: attendance-micro-app-service
+spec:
+  selector:
+    app: attendance-micro-app
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5002
+    targetPort: 5002
+    nodePort: 31110
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-micro-app-deployment
+  labels:
+    app: auth-micro-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-micro-app
+  template:
+    metadata:
+      labels:
+        app: auth-micro-app 
+    spec:
+      containers:
+      - name: auth-micro-app
+        image: asandro/auth_micro_github:latest
+        env:
+        - name: JWT_SECRET
+          value: VALUE HERE
+        ports:
+        - containerPort: 5001
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-micro-app-service
+spec:
+  selector:
+    app: auth-micro-app
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5001
+    targetPort: 5001
+    nodePort: 31120
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-micro-app-deployment
+  labels:
+    app: db-micro-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-micro-app
+  template:
+    metadata:
+      labels:
+        app: db-micro-app 
+    spec:
+      containers:
+      - name: db-micro-app
+        image: asandro/db_micro_github:latest
+        env:
+        - name: MONGO_URI
+          value: VALUE HERE
+        - name: JWT_SECRET
+          value: VALUE HERE
+        ports:
+        - containerPort: 5001
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-micro-app-service
+spec:
+  selector:
+    app: db-micro-app
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5001
+    targetPort: 5001
+    nodePort: 31130
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-micro-app-deployment
+  labels:
+    app: report-micro-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: report-micro-app
+  template:
+    metadata:
+      labels:
+        app: report-micro-app 
+    spec:
+      containers:
+      - name: report-micro-app
+        image: asandro/report_micro_github:latest
+        env:
+        - name: JWT_SECRET
+          value: VALUE HERE
+        ports:
+        - containerPort: 5004
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: report-micro-app-service
+spec:
+  selector:
+    app: report-micro-app
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5004
+    targetPort: 5004
+    nodePort: 31140
