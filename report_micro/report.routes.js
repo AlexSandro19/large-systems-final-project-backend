@@ -8,9 +8,9 @@ const cron = require('node-cron');
 const moment = require('moment');
 const generateCSV = require("./csvGenerator")
 
-const courseUrl = "http://roll-call.info/db/getCourses";
-const studentUrl = "http://roll-call.info/db/getStudents";
-const teacherUrl = "http://roll-call.info/db/getTeachers";
+const courseUrl = "http://localhost:5000/db/getAllCourses";
+const allStudentsUrl = "http://localhost:5000/db/getAllStudents";
+const teacherUrl = "http://localhost:5000/db/getAllTeachers";
 
 
 const router = Router();
@@ -24,7 +24,7 @@ router.get("/daily-report",
     try {
 
       const students = await axios
-        .get(studentUrl)
+        .get(allStudentsUrl)
         .then((response) => response.data)
         .catch((error) => {
           throw error.response;
@@ -236,7 +236,7 @@ function runReportJob(data) {
 async function doSomething() {
   // my code
   console.log(Date.now())
-  const { teachers } = await axios.get("http://roll-call.info/report/daily-report")
+  const { teachers } = await axios.get("http://localhost:5000/report/daily-report")
     .then((response) => response.data)
     .catch(function (error) {
       // handle error
@@ -248,7 +248,7 @@ async function doSomething() {
   console.log("teachersWithGeneratedFile: ", teachersWithGeneratedFile);
   teachersWithGeneratedFile.forEach(async teacher => {
 
-    const response = await axios.post("http://roll-call.info/report/email", { teacher })
+    const response = await axios.post("http://localhost:5000/report/email", { teacher })
       .then((response) => response.data)
       .catch(function (error) {
         // handle error
