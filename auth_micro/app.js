@@ -12,7 +12,7 @@ app.use(express.json())
 app.use("", require("./routes/auth.routes"));
 
 app.get('/test', (req, res) => {
-    res.status(200).send('all good from auth_micro');
+    res.status(200).send('all good from auth_micro exam');
 })
 
 module.exports = app;
